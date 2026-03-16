@@ -206,15 +206,44 @@ Esta dirección se utilizará para sobrescribir el registro EIP.
 
 Ejecución del exploit
 ---
-Finalmente se construye el payload completo del exploit.
+En esta fase final se construye y ejecuta el payload completo del exploit para comprobar que es posible controlar el flujo de ejecución del programa vulnerable.
 
-El payload se compone de:
+El payload se compone de los siguientes elementos:
 
-Relleno de 246 bytes
-Dirección de JMP ESP
+Relleno de 246 bytes (A's) para alcanzar el registro EIP
+
+Dirección de memoria que contiene un JMP ESP
+
 NOP sled
+
 Shellcode
 
-Al ejecutar el exploit se observa en Immunity Debugger que el flujo de ejecución del programa es redirigido hacia la pila.
+Durante el análisis se observa que las direcciones de memoria pueden cambiar entre ejecuciones debido a que el sistema tiene ASLR activado. Esto implica que las direcciones no serán siempre las mismas cada vez que se ejecute el binario.
 
-Esto demuestra que el exploit ha sido desarrollado correctamente y que el atacante puede ejecutar código dentro del proceso vulnerable.
+Por este motivo, en el momento del análisis se selecciona una dirección válida desde Immunity Debugger, copiando la dirección de memoria mostrada en el depurador, por ejemplo:
+
+75A8E647
+
+Posteriormente se utiliza la opción "Go to expression" para localizar dicha dirección en memoria y verificar que en esa posición existe una instrucción JMP ESP.
+
+Aunque en futuras ejecuciones esta dirección pueda cambiar debido al ASLR, en ese instante sabemos que esa dirección contiene un salto hacia el registro ESP, lo que nos permitirá redirigir el flujo de ejecución hacia los datos que hemos colocado en la pila.
+
+Una vez localizada la dirección adecuada, se modifica el script del exploit para sustituir el valor del EIP overwrite por la dirección que contiene el JMP ESP.
+
+De esta forma, el payload queda estructurado de la siguiente manera:
+
+Se envían 246 bytes de relleno (A's) para sobrescribir el buffer.
+
+Se sobrescribe el registro EIP con la dirección que contiene el JMP ESP.
+
+Cuando el programa intenta continuar su ejecución, el salto redirige el flujo hacia la pila.
+
+En la pila se encuentra el NOP sled, seguido del shellcode que será ejecutado.
+
+A continuación se ejecuta el script 06, que envía el payload al servicio vulnerable.
+
+Al analizar la ejecución en Immunity Debugger, se puede observar en la ventana de registros que el flujo del programa ha sido redirigido correctamente hacia la pila, lo que confirma que el control del EIP ha sido logrado.
+
+En este punto se ha conseguido ejecutar instrucciones controladas por el atacante (NOPs y breakpoints), demostrando que el exploit funciona correctamente.
+
+El siguiente paso del proceso consistirá en generar una shellcode real y modificar el script para incluirla en el payload, lo que permitirá finalmente obtener ejecución de código dentro del proceso vulnerable.
