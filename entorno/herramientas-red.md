@@ -24,3 +24,13 @@ Ncat es una herramienta incluida dentro de la suite Nmap que permite establecer 
 Su funcionamiento es similar al de herramientas como netcat, permitiendo enviar y recibir datos a través de una conexión TCP o UDP.
 
 Durante el laboratorio se utilizó Ncat para conectarse a servicios vulnerables como VulnServer y enviar datos manualmente con el objetivo de analizar el comportamiento del programa frente a diferentes entradas.
+
+### Conexión al servidor vulnerable
+
+Una vez que el servidor VulnServer se encuentra en ejecución, es posible interactuar con él utilizando herramientas de red como Ncat.
+
+Mediante este tipo de herramientas se pueden enviar comandos manualmente al servicio, lo que permite analizar cómo responde la aplicación ante diferentes entradas.
+
+Figura 2: Conexión al servidor VulnServer utilizando Ncat.
+
+![Conexion con Ncat](../images/ncat-vulnserver-connection.png)
