@@ -35,6 +35,18 @@ Figura 1: VulnServer ejecutándose en el entorno de laboratorio.
 
 ![VulnServer ejecutándose](../images/vulnserver-start.png)
 
+### Enumeración de comandos en VulnServer
+
+Una vez establecida la conexión con el servidor vulnerable mediante herramientas de red como Ncat, es posible consultar los comandos disponibles utilizando el comando `HELP`.
+
+Este comando permite identificar las diferentes funcionalidades que ofrece el servicio, lo que resulta útil durante la fase de reconocimiento del sistema.
+
+Analizar los comandos disponibles permite identificar posibles puntos de entrada donde podrían existir vulnerabilidades explotables.
+
+Figura 4: Enumeración de comandos disponibles en VulnServer mediante el comando HELP.
+
+![Comandos de VulnServer](../images/vulnserver-help-commands.png)
+
 ## FreeFloat FTP Server
 
 FreeFloat FTP Server es un servidor FTP vulnerable utilizado para practicar el análisis de vulnerabilidades en servicios de red.
