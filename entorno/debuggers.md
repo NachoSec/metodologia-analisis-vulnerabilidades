@@ -34,3 +34,15 @@ Immunity Debugger es una herramienta diseñada para analizar aplicaciones durant
 Permite observar en tiempo real el estado de los registros, la memoria y el stack del programa. Esto resulta fundamental cuando se analiza una vulnerabilidad relacionada con corrupción de memoria, ya que permite comprobar cómo una entrada maliciosa afecta al flujo de ejecución del programa.
 
 Además, Immunity Debugger permite utilizar plugins como **Mona**, que facilitan el proceso de desarrollo de exploits.
+
+### Análisis de VulnServer con Immunity Debugger
+
+La siguiente imagen muestra el servidor vulnerable **VulnServer** cargado dentro de Immunity Debugger.
+
+El uso de un debugger permite observar en tiempo real el comportamiento interno del programa, incluyendo el flujo de ejecución de las instrucciones, el estado de los registros y el contenido de la memoria.
+
+Este tipo de herramientas resulta fundamental durante el análisis de vulnerabilidades, ya que permite identificar cómo una entrada maliciosa puede afectar al flujo de ejecución del programa.
+
+Figura 3: VulnServer cargado dentro de Immunity Debugger para su análisis.
+
+![Immunity Debugger analizando VulnServer](../images/immunity-debugger-vulnserver.png)
