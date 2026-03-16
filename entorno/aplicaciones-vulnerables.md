@@ -1,11 +1,34 @@
 # Aplicaciones vulnerables
 
-Para practicar técnicas de explotación se utilizaron aplicaciones diseñadas para contener vulnerabilidades.
+Para poder practicar técnicas de análisis y explotación es necesario trabajar con aplicaciones diseñadas específicamente para contener vulnerabilidades.
+
+Este tipo de aplicaciones permiten reproducir escenarios reales donde un atacante puede enviar datos maliciosos a un servicio vulnerable y analizar cómo responde el programa.
+
+Durante el laboratorio se utilizaron las siguientes aplicaciones.
 
 ## VulnServer
 
-Servidor vulnerable utilizado para practicar técnicas de explotación.
+VulnServer es una aplicación vulnerable ampliamente utilizada en laboratorios de seguridad ofensiva.
+
+Se trata de un servidor que escucha conexiones de red y permite enviar diferentes comandos al servicio. Algunos de estos comandos contienen vulnerabilidades intencionadas que permiten estudiar técnicas de explotación.
+
+Entre sus características destacan:
+
+- Recepción de comandos a través de red
+- Posibilidad de enviar grandes cantidades de datos
+- Vulnerabilidades diseñadas para prácticas de explotación
+
+VulnServer se utiliza habitualmente para aprender técnicas como:
+
+- Buffer overflows
+- Análisis de memoria
+- Control del flujo de ejecución
+- Desarrollo de exploits
 
 ## FreeFloat FTP Server
 
-Servidor FTP vulnerable utilizado para estudiar vulnerabilidades en servicios de red.
+FreeFloat FTP Server es un servidor FTP vulnerable utilizado para practicar el análisis de vulnerabilidades en servicios de red.
+
+Este tipo de aplicaciones permiten estudiar cómo un servicio puede comportarse de forma incorrecta cuando recibe datos maliciosos enviados por un usuario.
+
+El análisis de este tipo de servidores permite comprender cómo los errores en la validación de datos pueden derivar en vulnerabilidades explotables.
