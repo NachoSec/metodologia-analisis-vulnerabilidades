@@ -25,11 +25,15 @@ Análisis del binario vulnerable
 ---
 Antes de comenzar la explotación es necesario analizar el binario del servidor FTP para comprender cómo procesa las peticiones que recibe.
 
+![FreeFloat FTP Server ejecutándose](../images/startftp.png)
+
 Para ello se utiliza IDA Pro, una herramienta de ingeniería inversa que permite analizar el código del programa.
 
 Dentro de IDA se abre el ejecutable FTPServer.exe y se accede a la vista de cadenas del programa mediante:
 
 View → Open Subviews → Strings
+
+![Vista de strings en IDA](../images/strings.png)
 
 Esta vista permite observar todas las cadenas de texto utilizadas por el programa.
 
@@ -40,6 +44,8 @@ USER
 Este comando forma parte del protocolo FTP y está relacionado con el proceso de autenticación del servidor.
 
 Al localizar la cadena se utilizan las referencias cruzadas (Xrefs) para identificar qué función del programa utiliza esa cadena.
+
+![Localización de la función vulnerable](../images/findfuction.png)
 
 El análisis muestra que la cadena es utilizada dentro de la función ubicada en la dirección:
 
@@ -62,6 +68,8 @@ El script también intenta ejecutar el comando:
 
 NOOP
 
+![Conexión con el servidor FTP](../images/conexionserver.png)
+
 Este comando no es procesado por el servidor debido a que no existe un handler que lo gestione dentro del código analizado.
 
 Sin embargo, el servidor responde correctamente a la conexión, lo que confirma que es posible establecer comunicación con el servicio y enviar comandos al programa vulnerable.
@@ -83,7 +91,11 @@ El tamaño del buffer aumenta progresivamente:
 
 Tras enviar una cantidad suficiente de datos, el programa deja de funcionar correctamente y se produce un fallo en memoria.
 
+![Fuzzing de la entrada](../images/fuzzingentrada.png)
+
 En Immunity Debugger se puede observar que el registro EIP ha sido sobrescrito con valores correspondientes al carácter A, lo que indica que el buffer enviado ha sobrepasado el tamaño esperado por el programa.
+
+![Primer EIP sobrescrito](../images/primereip.png)
 
 Este comportamiento confirma la existencia de una vulnerabilidad de buffer overflow.
 
@@ -109,6 +121,8 @@ El patrón se guarda en el archivo:
 
 pattern.txt
 
+![Creación del patrón cíclico](../images/mona400.png)
+
 Este archivo será utilizado en el siguiente paso para identificar la posición exacta donde el buffer sobrescribe el registro EIP.
 
 Descubrimiento del offset de EIP
@@ -131,6 +145,8 @@ Además, el registro EIP contiene el valor:
 
 41326941
 
+![Crash del servidor](../images/eipcrash.png)
+
 Este valor forma parte del patrón cíclico enviado al servidor.
 
 Cálculo del offset
@@ -144,6 +160,8 @@ La herramienta Mona devuelve el resultado:
 found in cyclic pattern at position 246
 
 Esto significa que el byte número 246 del buffer sobrescribe el registro EIP.
+
+![Cálculo del offset](../images/position246.png)
 
 Este valor es fundamental para construir el exploit.
 
@@ -159,6 +177,8 @@ Los caracteres BBBB corresponden al valor hexadecimal:
 42424242
 
 Al ejecutar el script se observa en Immunity Debugger que el registro EIP contiene exactamente ese valor.
+
+![Control del EIP](../images/eip424242.png)
 
 Esto confirma que es posible controlar completamente el flujo de ejecución del programa.
 
@@ -177,6 +197,8 @@ Para identificarlos se utiliza el comando:
 Este comando genera un array con todos los posibles valores de bytes.
 
 Posteriormente se envían estos bytes al servidor y se analizan en memoria utilizando Immunity Debugger.
+
+![Análisis de bad characters](../images/analisismaloscaracteres.png)
 
 Tras varias iteraciones se identifican los siguientes bad characters:
 
@@ -202,6 +224,8 @@ Una de las direcciones encontradas es:
 
 0x75A8E647
 
+![Búsqueda de JMP ESP](../images/monafindjmpesp.png)
+
 Esta dirección se utilizará para sobrescribir el registro EIP.
 
 Ejecución del exploit
@@ -224,11 +248,15 @@ Por este motivo, en el momento del análisis se selecciona una dirección válid
 
 75A8E647
 
+![Dirección JMP ESP encontrada](../images/jmpesp.png)
+
 Posteriormente se utiliza la opción "Go to expression" para localizar dicha dirección en memoria y verificar que en esa posición existe una instrucción JMP ESP.
 
 Aunque en futuras ejecuciones esta dirección pueda cambiar debido al ASLR, en ese instante sabemos que esa dirección contiene un salto hacia el registro ESP, lo que nos permitirá redirigir el flujo de ejecución hacia los datos que hemos colocado en la pila.
 
 Una vez localizada la dirección adecuada, se modifica el script del exploit para sustituir el valor del EIP overwrite por la dirección que contiene el JMP ESP.
+
+![Modificación del script](../images/modificacionscript.png)
 
 De esta forma, el payload queda estructurado de la siguiente manera:
 
@@ -243,6 +271,8 @@ En la pila se encuentra el NOP sled, seguido del shellcode que será ejecutado.
 A continuación se ejecuta el script 06, que envía el payload al servicio vulnerable.
 
 Al analizar la ejecución en Immunity Debugger, se puede observar en la ventana de registros que el flujo del programa ha sido redirigido correctamente hacia la pila, lo que confirma que el control del EIP ha sido logrado.
+
+![Verificación de ejecución](../images/verificarejecucion.png)
 
 En este punto se ha conseguido ejecutar instrucciones controladas por el atacante (NOPs y breakpoints), demostrando que el exploit funciona correctamente.
 
