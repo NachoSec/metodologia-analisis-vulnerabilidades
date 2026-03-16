@@ -93,6 +93,10 @@ Una vez confirmada la vulnerabilidad es necesario determinar exactamente cuánto
 
 Para ello se utiliza la herramienta Mona, integrada en Immunity Debugger.
 
+Creamos un folder que se llame mona en C:\ 
+
+!mona config -set workingfolder C:\Mona con esto conseguiremos que los archivos que se creen se dirigan a la carpeta creada para mona
+
 Mediante el comando:
 
 !mona pattern_create 400
