@@ -25,6 +25,16 @@ VulnServer se utiliza habitualmente para aprender técnicas como:
 - Control del flujo de ejecución
 - Desarrollo de exploits
 
+  ### Ejecución de VulnServer
+
+La siguiente imagen muestra el servidor vulnerable VulnServer en ejecución dentro del entorno de laboratorio.
+
+El servidor queda a la espera de conexiones entrantes, lo que permite interactuar con él mediante herramientas de red o scripts desarrollados para el análisis de vulnerabilidades.
+
+Figura 1: VulnServer ejecutándose en el entorno de laboratorio.
+
+![VulnServer ejecutándose](../images/vulnserver-start.png)
+
 ## FreeFloat FTP Server
 
 FreeFloat FTP Server es un servidor FTP vulnerable utilizado para practicar el análisis de vulnerabilidades en servicios de red.
