@@ -18,3 +18,18 @@ Entre sus principales funcionalidades destacan:
 - Análisis de estructuras de memoria utilizadas por el programa
 
 El uso de Mona permite simplificar considerablemente el proceso de desarrollo de exploits, especialmente cuando se trabaja con vulnerabilidades como los **buffer overflows**.
+
+### Uso del plugin Mona en Immunity Debugger
+
+Este comando muestra información sobre los módulos cargados en el proceso, incluyendo protecciones de seguridad como:
+
+- ASLR
+- SafeSEH
+- DEP / NX
+
+Esta información es fundamental para determinar qué módulos pueden utilizarse durante el proceso de explotación.
+
+Figura 6: Ejecución del comando `!mona modules` en Immunity Debugger.
+
+![Mona modules](../images/immunity-mona-modules.png)
+
